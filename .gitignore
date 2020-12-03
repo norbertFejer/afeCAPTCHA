@@ -1,0 +1,14 @@
+.idea
+__pycache__
+.vscode
+
+*.xlsx
+*.csv
+*.png
+*.zip
+*.hdf5
+*.ows
+
+trained_models/
+results/
+datasets/
