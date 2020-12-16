@@ -140,19 +140,10 @@ def get_features_from_model(model, raw_data):
     return model.predict(raw_data)
 
 
-# def get_train_dataset_ocsvm_by_user_id(df, user_id):
-#     data_X = df.loc[df.iloc[:, 256] == user_id]
-#     return data_X.iloc[:, :256].to_numpy().reshape((data_X.shape[0], 128, 2), order='F')
-#     # return data_X.iloc[:, :256].to_numpy()
-
-
 def get_train_dataset_ocsvm_by_user_id(df, user_id):
     data_X = df.loc[df.iloc[:, nb_filters] == user_id]
     return data_X.iloc[:, :nb_filters].to_numpy()
 
-
-# def get_test_dataset_ocsvm_by_user_id(df):
-#     return df.iloc[:, 0:256].to_numpy().reshape((df.shape[0], 128, 2), order='F'), df.iloc[:, 256].to_numpy()
 
 def get_test_dataset_ocsvm_by_user_id(df):
     return df.iloc[:, 0:nb_filters].to_numpy(), df.iloc[:, nb_filters].to_numpy()

@@ -9,24 +9,25 @@ import time
 from sklearn.metrics import roc_curve, auc
 from sklearn.model_selection import train_test_split
 
+import feature_extractor.settings_fcn as stt_fcn
 
-AGGREGATE_BLOCK_NUM = 1
 
 
 class Classifier_FCN:
     
-    def __init__(self, output_directory, input_shape, nb_classes, nb_filters=128, verbose=False, build=True):
+    def __init__(self, output_directory, input_shape, nb_classes, verbose=False, nb_filters=stt_fcn.NB_FILTERS, build=True):
         self.output_directory = output_directory
         
         if build == True:
             self.nb_filters = nb_filters
             self.model = self.build_model(input_shape, nb_classes)
+            self.isTrained = False
 
             if(verbose == True):
                 self.model.summary()
             
             self.verbose = verbose
-            self.model.save_weights(self.output_directory + '/fcn_model_init_nb_f' + str(self.nb_filters) + '.hdf5')
+            self.model.save_weights(self.output_directory + '/' + stt_fcn.INIT_MODEL_NAME + str(self.nb_filters) + '.hdf5')
             
         return
         
@@ -58,7 +59,7 @@ class Classifier_FCN:
         reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.5, patience=50, 
 			min_lr=0.0001)
             
-        file_path = self.output_directory + '/best_fcn_model_nb_f' + str(self.nb_filters) + '.hdf5'
+        file_path = self.output_directory + '/' + stt_fcn.BEST_MODEL_NAME + str(self.nb_filters) + '.hdf5'
         
         model_checkpoint = keras.callbacks.ModelCheckpoint(filepath=file_path, monitor='loss', 
 			save_best_only=True)
@@ -76,7 +77,7 @@ class Classifier_FCN:
 
         # x_val and y_val are only used to monitor the test loss and NOT for training  
         batch_size = 16
-        nb_epochs = 10
+        nb_epochs = stt_fcn.NB_EPOCH
 
         mini_batch_size = int(min(trainX.shape[0]/10, batch_size))
 
@@ -91,6 +92,9 @@ class Classifier_FCN:
         duration = time.time() - start_time
         print("Model learning finished in: ", str(duration) + "s")
     
-        self.model.save(self.output_directory + 'last_fcn_model.hdf5')
+        self.model.save(self.output_directory + '/' + stt_fcn.LAST_MODEL_NAME + str(self.nb_filters) + '.hdf5')
         return hist
-		
+
+    
+    def get_model(self):
+        return self.model

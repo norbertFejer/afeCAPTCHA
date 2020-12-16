@@ -4,8 +4,8 @@ import pandas as pd
 import os
 
 
-train_dataset_path = 'c:/Anaconda projects/Software_mod/analysis/raw_data/sapimouse_128_3min.csv'
-test_dataset_path = 'c:/Anaconda projects/Software_mod/analysis/raw_data/sapimouse_128_1min.csv'
+train_dataset_path = 'c:/Anaconda projects/afeCAPTCHA/datasets/preprocessed_dataset/sapimouse_3min.csv'
+test_dataset_path = 'c:/Anaconda projects/afeCAPTCHA/datasets/preprocessed_dataset/sapimouse_1min.csv'
 
 output_folder = 'C:/Anaconda projects/afeCAPTCHA/analysis'
 nb_users = 123
@@ -26,6 +26,15 @@ def print_user_blocks_num(dataset_path, output_filename):
         file.write(str(username) + ',' + str(nb_blocks) + '\n')
 
     file.close()
+
+def print_general_dataset_info (dataset_path):
+    df = pd.read_csv(dataset_path, header=None)
+
+    print ("Dataset shape: ", df.shape)
+    print('*** Info ***')
+    print(df.info())
+    print('*** Describe ***')
+    print(df.describe())
 
 
 def print_mouse_movements(dataset_path, output_filename):
@@ -48,4 +57,5 @@ def print_mouse_movements(dataset_path, output_filename):
 if __name__ == "__main__":
     # print_user_blocks_num(test_dataset_path, "sapimouse_1min_blocks_num.csv")
     # print_user_blocks_num(train_dataset_path, "sapimouse_3min_blocks_num.csv")
-    print_mouse_movements('C:/Anaconda projects/afeCAPTCHA/analysis/user_mouse_movements', 'movements_len_avg.csv')
+    # print_mouse_movements('C:/Anaconda projects/afeCAPTCHA/analysis/user_mouse_movements', 'movements_len_avg.csv')
+    print_general_dataset_info (train_dataset_path)
